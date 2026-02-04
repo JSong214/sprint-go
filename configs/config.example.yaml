@@ -1,0 +1,17 @@
+server:
+  port: 8080
+  mode: debug # debug, release, test
+
+database:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: your_password # 纯数字加 ""
+  dbname: your_db_name
+  sslmode: disable
+  timezone: Asia/Shanghai
+
+  # 连接池配置
+  max_idle_conns: 10
+  max_open_conns: 100
+  conn_max_lifetime: 3600 # 秒
