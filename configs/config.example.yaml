@@ -2,6 +2,7 @@ server:
   port: 8080
   mode: debug # debug, release, test
 
+# 数据库
 database:
   host: localhost
   port: 5432
@@ -15,3 +16,24 @@ database:
   max_idle_conns: 10
   max_open_conns: 100
   conn_max_lifetime: 3600 # 秒
+
+# 跨域
+cors:
+  allow_origins:
+    - http://localhost:5173
+  allow_methods:
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+    - OPTIONS
+  allow_headers:
+    - Origin
+    - Content-Type
+    - Accept
+    - Authorization
+  expose_headers:
+    - Content-Length
+  allow_credentials: true
+  max_age: 43200 # 秒 (12小时)

@@ -9,6 +9,7 @@ import (
 
 	"github.com/JSong214/sprint-go/internal/config"
 	"github.com/JSong214/sprint-go/internal/database"
+	"github.com/JSong214/sprint-go/internal/router/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,6 +31,9 @@ func main() {
 
 	// 创建Gin引擎
 	r := gin.Default()
+
+	// 配置CORS
+	r.Use(middleware.CORS())
 
 	// 检查路由
 	r.GET("/health", func(c *gin.Context) {
