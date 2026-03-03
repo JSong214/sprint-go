@@ -37,3 +37,9 @@ cors:
     - Content-Length
   allow_credentials: true
   max_age: 43200 # 秒 (12小时)
+
+# JWT 认证
+jwt:
+  secret: "your-jwt-secret-key"
+  expire_hour: 24
+  issuer: "your-issuer"

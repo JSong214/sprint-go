@@ -9,7 +9,9 @@ import (
 
 	"github.com/JSong214/sprint-go/internal/config"
 	"github.com/JSong214/sprint-go/internal/database"
+	"github.com/JSong214/sprint-go/internal/router"
 	"github.com/JSong214/sprint-go/internal/router/middleware"
+	myjwt "github.com/JSong214/sprint-go/pkg/jwt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +21,13 @@ func main() {
 	if err := config.LoadConfig(configPath); err != nil {
 		log.Fatalf("配置加载失败: %v", err)
 	}
+
+	// 初始化 JWT
+	myjwt.Init(&myjwt.Config{
+		Secret:     config.AppConfig.JWT.Secret,
+		ExpireHour: config.AppConfig.JWT.ExpireHour,
+		Issuer:     config.AppConfig.JWT.Issuer,
+	})
 
 	// 初始化数据库
 	if err := database.InitDB(&config.AppConfig.Database); err != nil {
@@ -35,7 +44,17 @@ func main() {
 	// 配置CORS
 	r.Use(middleware.CORS())
 
-	// 检查路由
+	// 自动迁移数据库（开发环境）
+	if config.AppConfig.Server.Mode == "debug" {
+		if err := database.AutoMigrate(); err != nil {
+			log.Fatalf("数据库迁移失败: %v", err)
+		}
+	}
+
+	// 配置路由
+	router.SetupRoutes(r, database.DB)
+
+	// 健康检查路由
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status":  "ok",

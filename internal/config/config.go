@@ -11,6 +11,7 @@ type Config struct {
 	Server   ServerConfig   `mapstructure:"server"`
 	Database DatabaseConfig `mapstructure:"database"`
 	CORS     CORSConfig     `mapstructure:"cors"`
+	JWT      JWTConfig      `mapstructure:"jwt"`
 }
 
 type ServerConfig struct {
@@ -38,6 +39,12 @@ type CORSConfig struct {
 	ExposeHeaders    []string `mapstructure:"expose_headers"`
 	AllowCredentials bool     `mapstructure:"allow_credentials"`
 	MaxAge           int      `mapstructure:"max_age"`
+}
+
+type JWTConfig struct {
+	Secret     string `mapstructure:"secret"`
+	ExpireHour int    `mapstructure:"expire_hour"`
+	Issuer     string `mapstructure:"issuer"`
 }
 
 var AppConfig *Config
